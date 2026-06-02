@@ -1,23 +1,18 @@
-
 body, html {
     margin: 0;
     padding: 0;
     height: 100%;
-    
     font-family: 'Poppins', sans-serif;
-    
     background-color: #f8fafc;
     color: #1e293b; 
-    -webkit-font-smoothing: antialiased; /
+    -webkit-font-smoothing: antialiased;
 }
-
 
 .company-header {
     position: absolute;
     top: 0;
     width: 100%;
     background-color: #ffffff;
-
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
     z-index: 100; 
 }
@@ -38,15 +33,17 @@ body, html {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    min-height: 100vh; 
     gap: 25px;
-    padding: 0 20px;
+    padding: 140px 20px 50px 20px; 
+    box-sizing: border-box; 
 }
 
 h2 {
     font-weight: 600;
     color: #0f172a;
     margin-bottom: 10px;
+    text-align: center; 
 }
 
 p {
@@ -54,7 +51,6 @@ p {
     line-height: 1.6;
     color: #475569;
 }
-
 
 .btn {
     display: inline-flex; 
@@ -69,22 +65,14 @@ p {
     width: 100%;
     max-width: 300px;
     box-sizing: border-box;
-    
-   
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    
-   
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
 }
-
 
 .icon {
     margin-right: 10px;
     font-size: 1.2em;
 }
-
-
-
 
 .btn-primary {
     color: white;
@@ -92,13 +80,11 @@ p {
     border: none;
 }
 
-
 .btn-primary:hover {
     background-color: #0f766e;
     transform: translateY(-3px); 
     box-shadow: 0 10px 15px rgba(13, 148, 136, 0.2); 
 }
-
 
 .btn-secondary {
     color: white;
@@ -112,12 +98,10 @@ p {
     box-shadow: 0 10px 15px rgba(30, 41, 59, 0.2);
 }
 
-
 .btn-outline {
     color: #0d9488;
     background-color: transparent;
     border: 2px solid #0d9488;
-    
     box-shadow: none; 
 }
 
@@ -125,7 +109,6 @@ p {
     background-color: #f0fdfa; 
     transform: translateY(-3px);
 }
-
 
 .btn:active {
     transform: translateY(-1px); 
