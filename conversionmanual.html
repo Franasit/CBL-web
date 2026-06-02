@@ -43,6 +43,20 @@
             margin-top: 80px; 
             text-align: center; 
         }
+        
+        .video-container {
+            width: 100%;
+            max-width: 500px; 
+            margin-bottom: 30px;
+            border-radius: 12px; 
+            overflow: hidden; 
+            box-shadow: 0 6px 12px rgba(0,0,0,0.1); 
+        }
+        
+        video {
+            width: 100%;
+            display: block; 
+        }
     </style>
 </head>
 <body>
@@ -66,6 +80,13 @@
             <li><strong>The Upgrade:</strong> Take the intact magnetic core module and press it into your weighted desktop dock. Plug the USB-C cable directly into the core.</li>
             <li><strong>Power On:</strong> Your device is now a permanent, your own MagSafe charging station.</li>
         </ol>
+
+        <div class="video-container">
+            <video controls>
+                <source src="film.mp4" type="video/mp4">
+                Twoja przeglądarka nie obsługuje odtwarzacza wideo.
+            </video>
+        </div>
         
         <a href="index.html" class="btn btn-secondary">Go back</a>
     </main>
