@@ -18,7 +18,7 @@
             overflow-x: hidden;
         }
 
-        /* ── Header ── */
+        
         .company-header {
             position: fixed;
             top: 0; left: 0; right: 0;
@@ -58,7 +58,7 @@
         }
         .header-back:hover { color: #0d9488; }
 
-        /* ── Hero intro ── */
+        
         .hero {
             height: 100vh;
             display: flex;
@@ -204,7 +204,7 @@
             line-height: 1.55;
         }
 
-        /* Step labels that overlay the animation */
+        
         .step-label {
             position: absolute;
             opacity: 0;
@@ -234,21 +234,21 @@
             white-space: nowrap;
         }
 
-        /* right-side label */
+        
         .label-right { right: -160px; top: 50%; transform: translateY(-50%); }
         .label-right .step-label-inner { flex-direction: row; }
 
-        /* left-side label */
+        
         .label-left { left: -160px; top: 50%; transform: translateY(-50%); }
         .label-left .step-label-inner { flex-direction: row-reverse; }
         .label-left .step-label-line { }
 
-        /* bottom label */
+        
         .label-bottom { bottom: -60px; left: 50%; transform: translateX(-50%); }
         .label-bottom .step-label-inner { flex-direction: column; }
         .label-bottom .step-label-line { width: 1px; height: 30px; }
 
-        /* Step counter overlay */
+        
         .step-counter {
             position: absolute;
             bottom: 40px;
@@ -273,7 +273,7 @@
             text-transform: uppercase;
         }
 
-        /* Progress bar */
+        
         .progress-bar {
             position: fixed;
             bottom: 0; left: 0;
@@ -284,7 +284,7 @@
             transition: width 0.05s linear;
         }
 
-        /* ── Caption panels ── */
+        
         .caption-spacer {
             height: 130vh;
             position: relative;
@@ -328,7 +328,7 @@
             line-height: 1.7;
         }
 
-        /* ── Post-animation content ── */
+        
         .post-content {
             background: #f8fafc;
             color: #1e293b;
@@ -465,10 +465,9 @@
 
 <header class="company-header">
     <div class="company-name">Circular Power</div>
-    <a href="index.html" class="header-back">← Home</a>
 </header>
 
-<!-- Hero -->
+
 <section class="hero" id="hero">
     <div class="hero-eyebrow" id="heroEyebrow">Modular Conversion Manual</div>
     <h1 id="heroTitle">From power bank<br>to charging station.</h1>
@@ -479,13 +478,13 @@
     </div>
 </section>
 
-<!-- Scroll animation stage -->
+
 <section class="scroll-stage" id="scrollStage">
     <div class="scroll-pin-wrapper" id="pinWrapper">
         <div class="product-canvas" id="productCanvas">
             <canvas class="sequence-canvas" id="sequenceCanvas" aria-label="Power bank conversion animation"></canvas>
 
-            <!-- Labels per frame -->
+            
             <div class="step-label label-right" id="label-0">
                 <div class="step-label-inner">
                     <div class="step-label-line"></div>
@@ -522,7 +521,7 @@
             </div>
         </div>
 
-        <!-- Step counter -->
+        
         <div class="step-counter" id="stepCounter">
             <div class="step-counter-num" id="stepNum">01</div>
             <div class="step-counter-label">of 05</div>
@@ -561,7 +560,7 @@
         </div>
     </div>
 
-    <!-- Spacer with captions -->
+   
     <div class="caption-spacer">
         <div class="caption-overlay" id="cap-0" style="top: 5vh;">
             <div class="caption-step">Step 01</div>
@@ -595,7 +594,7 @@
     </div>
 </section>
 
-<!-- Post-animation content -->
+
 <section class="post-content">
     <div class="post-inner">
 
@@ -642,7 +641,7 @@
         <div class="section-card" style="padding-bottom: 10px;">
             <h3 style="border:none; text-align:center;">Video Walkthrough</h3>
             <div class="video-container">
-                <iframe src="https://www.youtube.com/embed/28lrIe_l5Bc" title="Conversion manual" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                <iframe src="https://youtu.be/DgDBe2COzcY" title="Conversion manual" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
             </div>
         </div>
 
@@ -656,17 +655,17 @@
 <script>
 gsap.registerPlugin(ScrollTrigger);
 
-// Hero entrance
+
 gsap.timeline({ delay: 0.3 })
     .to('#heroEyebrow', { opacity: 1, y: 0, duration: 0.7, ease: 'power2.out' })
     .to('#heroTitle',   { opacity: 1, y: 0, duration: 0.8, ease: 'power2.out' }, '-=0.4')
     .to('#heroSub',     { opacity: 1, y: 0, duration: 0.7, ease: 'power2.out' }, '-=0.4')
     .to('#scrollHint',  { opacity: 1, duration: 0.6 }, '-=0.2');
 
-// Set initial states
+
 gsap.set(['#heroEyebrow','#heroTitle','#heroSub'], { y: 30 });
 
-// Canvas image sequence configuration
+
 let frameCount = 101;
 let frameBasePath = './';
 const frameState = { index: 0 };
@@ -846,7 +845,7 @@ function renderSequence() {
     drawBlendedFrame(nextIndex);
 }
 
-// Step overlay configuration
+
 const labels = [
     ['label-0'],
     ['label-1'],
@@ -862,31 +861,31 @@ let currentStep = 0;
 function showStep(idx) {
     if (idx === currentStep) return;
 
-    // swap labels
+    
     labels[currentStep].forEach(id => document.getElementById(id)?.classList.remove('visible'));
     labels[idx].forEach(id => document.getElementById(id)?.classList.add('visible'));
 
-    // swap captions
+    
     document.getElementById(captions[currentStep])?.classList.remove('visible');
     document.getElementById(captions[idx])?.classList.add('visible');
 
-    // highlight persistent step list
+    
     document.getElementById(stepCards[currentStep])?.classList.remove('active');
     document.getElementById(stepCards[idx])?.classList.add('active');
 
-    // step counter
+    
     document.getElementById('stepNum').textContent = String(idx + 1).padStart(2, '0');
 
     currentStep = idx;
 }
 
-// Show first caption and labels on load
+
 document.getElementById(captions[0]).classList.add('visible');
 labels[0].forEach(id => document.getElementById(id)?.classList.add('visible'));
 document.getElementById(stepCards[0])?.classList.add('active');
 document.getElementById('stepCounter').style.opacity = '1';
 
-// Main scroll trigger
+
 const totalSteps = captions.length;
 
 async function initSequenceAnimation() {
@@ -915,7 +914,7 @@ async function initSequenceAnimation() {
                 const stepIdx = Math.min(totalSteps - 1, Math.floor(progress * totalSteps));
                 showStep(stepIdx);
 
-                // progress bar
+                
                 document.getElementById('progressBar').style.width = (progress * 100) + '%';
             }
         }
@@ -926,7 +925,7 @@ async function initSequenceAnimation() {
 
 initSequenceAnimation();
 
-// Fade out scroll hint on first scroll
+
 ScrollTrigger.create({
     trigger: '#scrollStage',
     start: 'top 80%',

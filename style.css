@@ -132,7 +132,7 @@ p {
     transform: translateY(-1px); 
 }
 
-/* Index page specific */
+
 .index-container {
     flex-direction: row;
     flex-wrap: wrap;
