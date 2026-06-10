@@ -1,111 +1,938 @@
 <!DOCTYPE html>
-<html lang="pl">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Our name?</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    <title>Conversion Manual | Circular Power</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     <style>
-        
-        .container {
-            height: auto !important; 
-            min-height: 100vh; 
-            justify-content: flex-start; 
-            padding-top: 140px; 
-            padding-bottom: 50px; 
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body, html {
+            font-family: 'Poppins', sans-serif;
+            background: #000;
+            color: #f0f4f8;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
         }
 
-        
-        h2 {
-            margin-top: 0; /
-            text-align: center; 
-            margin-bottom: 25px;
+        /* ── Header ── */
+        .company-header {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 200;
+            padding: 20px 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
         }
 
-        .instruction-list {
-            text-align: left;
-            max-width: 500px;
-            margin-bottom: 25px;
-            color: #475569;
-            line-height: 1.8;
+        .company-header::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.85) 0%, transparent 100%);
+            pointer-events: none;
+        }
+
+        .company-name {
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: #0d9488;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header-back {
+            position: relative;
+            z-index: 1;
+            font-size: 13px;
+            color: rgba(255,255,255,0.5);
+            text-decoration: none;
+            letter-spacing: 1px;
+            transition: color 0.2s;
+        }
+        .header-back:hover { color: #0d9488; }
+
+        /* ── Hero intro ── */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 0 20px;
+            position: relative;
+        }
+
+        .hero-eyebrow {
+            font-size: 11px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: #0d9488;
+            margin-bottom: 20px;
+            opacity: 0;
+        }
+
+        .hero h1 {
+            font-size: clamp(36px, 6vw, 72px);
+            font-weight: 700;
+            line-height: 1.05;
+            letter-spacing: -1px;
+            color: #fff;
+            max-width: 700px;
+            opacity: 0;
+        }
+
+        .hero p {
+            margin-top: 24px;
             font-size: 16px;
+            font-weight: 300;
+            color: rgba(255,255,255,0.5);
+            max-width: 440px;
+            line-height: 1.7;
+            opacity: 0;
         }
-        .instruction-list li {
+
+        .scroll-hint {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            opacity: 0;
+        }
+
+        .scroll-hint span {
+            font-size: 11px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.3);
+        }
+
+        .scroll-line {
+            width: 1px;
+            height: 48px;
+            background: linear-gradient(to bottom, rgba(255,255,255,0.3), transparent);
+            animation: scrollPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes scrollPulse {
+            0%, 100% { transform: scaleY(1); opacity: 0.5; }
+            50% { transform: scaleY(0.6); opacity: 1; }
+        }
+
+        
+        .scroll-stage {
+            position: relative;
+        }
+
+        .scroll-pin-wrapper {
+            position: relative;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .product-canvas {
+            position: relative;
+            width: min(80vw, 700px);
+            aspect-ratio: 1456 / 816;
+        }
+
+        .sequence-canvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        .step-nav {
+            position: absolute;
+            left: clamp(20px, 4vw, 56px);
+            top: 50%;
+            z-index: 3;
+            width: min(310px, 28vw);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            transform: translateY(-50%);
+        }
+
+        .step-card {
+            padding: 14px 0 14px 18px;
+            border-left: 2px solid rgba(255,255,255,0.12);
+            opacity: 0.52;
+            transition: opacity 0.35s ease, border-color 0.35s ease, transform 0.35s ease;
+        }
+
+        .step-card.active {
+            border-color: #0d9488;
+            opacity: 1;
+            transform: translateX(6px);
+        }
+
+        .step-card-kicker {
+            margin-bottom: 5px;
+            font-size: 10px;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            color: #0d9488;
+        }
+
+        .step-card-title {
+            margin-bottom: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            color: #fff;
+            line-height: 1.25;
+        }
+
+        .step-card-body {
+            font-size: 12px;
+            font-weight: 300;
+            color: rgba(255,255,255,0.56);
+            line-height: 1.55;
+        }
+
+        /* Step labels that overlay the animation */
+        .step-label {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+        }
+
+        .step-label.visible { opacity: 1; }
+
+        .step-label-inner {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .step-label-line {
+            width: 40px;
+            height: 1px;
+            background: rgba(13,148,136,0.6);
+        }
+
+        .step-label-text {
+            font-size: 12px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.7);
+            white-space: nowrap;
+        }
+
+        /* right-side label */
+        .label-right { right: -160px; top: 50%; transform: translateY(-50%); }
+        .label-right .step-label-inner { flex-direction: row; }
+
+        /* left-side label */
+        .label-left { left: -160px; top: 50%; transform: translateY(-50%); }
+        .label-left .step-label-inner { flex-direction: row-reverse; }
+        .label-left .step-label-line { }
+
+        /* bottom label */
+        .label-bottom { bottom: -60px; left: 50%; transform: translateX(-50%); }
+        .label-bottom .step-label-inner { flex-direction: column; }
+        .label-bottom .step-label-line { width: 1px; height: 30px; }
+
+        /* Step counter overlay */
+        .step-counter {
+            position: absolute;
+            bottom: 40px;
+            right: 40px;
+            text-align: right;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .step-counter-num {
+            font-size: 48px;
+            font-weight: 700;
+            color: rgba(255,255,255,0.08);
+            line-height: 1;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .step-counter-label {
+            font-size: 11px;
+            letter-spacing: 2px;
+            color: rgba(255,255,255,0.2);
+            text-transform: uppercase;
+        }
+
+        /* Progress bar */
+        .progress-bar {
+            position: fixed;
+            bottom: 0; left: 0;
+            height: 2px;
+            background: #0d9488;
+            width: 0%;
+            z-index: 300;
+            transition: width 0.05s linear;
+        }
+
+        /* ── Caption panels ── */
+        .caption-spacer {
+            height: 130vh;
+            position: relative;
+        }
+
+        .caption-overlay {
+            display: none;
+            position: absolute;
+            left: 40px;
+            width: 260px;
+            opacity: 0;
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            transform: translateY(20px);
+        }
+
+        .caption-overlay.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .caption-step {
+            font-size: 10px;
+            letter-spacing: 3px;
+            color: #0d9488;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        .caption-title {
+            font-size: 22px;
+            font-weight: 600;
+            color: #fff;
+            line-height: 1.2;
+            margin-bottom: 12px;
+        }
+
+        .caption-body {
+            font-size: 14px;
+            font-weight: 300;
+            color: rgba(255,255,255,0.5);
+            line-height: 1.7;
+        }
+
+        /* ── Post-animation content ── */
+        .post-content {
+            background: #f8fafc;
+            color: #1e293b;
+            padding: 100px 20px;
+        }
+
+        .post-inner {
+            max-width: 750px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .post-inner h2 {
+            font-weight: 700;
+            color: #0f172a;
+            text-align: center;
+            font-size: 28px;
             margin-bottom: 10px;
         }
 
+        .post-inner h3 {
+            font-weight: 600;
+            color: #0d9488;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #f1f5f9;
+            padding-bottom: 10px;
+        }
+
+        .section-card {
+            background: #fff;
+            padding: 35px;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.03);
+            transition: transform 0.4s cubic-bezier(0.4,0,0.2,1), box-shadow 0.4s ease;
+        }
+        .section-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.08);
+        }
+
+        p, li { font-size: 16px; line-height: 1.7; color: #475569; }
+
         .safety-note {
-            background-color: #fee2e2; 
-            color: #991b1b; 
-            padding: 15px 20px;
-            border-left: 5px solid #ef4444; 
-            border-radius: 6px;
+            background: #fee2e2;
+            color: #991b1b;
+            padding: 20px;
+            border-left: 6px solid #ef4444;
+            border-radius: 8px;
             font-size: 15px;
-            max-width: 500px;
-            margin-bottom: 25px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05); 
+            margin-bottom: 10px;
             display: flex;
-            align-items: center;
+            align-items: flex-start;
         }
-        
-        .safety-note .icon-warning {
-            margin-right: 12px;
-            font-size: 20px;
+        .safety-note .icon-warning { margin-right: 15px; font-size: 24px; line-height: 1; }
+
+        .warning-list { list-style: none; padding: 0; margin: 20px 0 0; }
+        .warning-list li {
+            margin-bottom: 12px;
+            position: relative;
+            padding-left: 28px;
+            color: #7f1d1d;
         }
-        
-        /* Styl dla odtwarzacza YouTube */
+        .warning-list li::before { content: "⚠️"; position: absolute; left: 0; top: 2px; font-size: 14px; }
+
         .video-container {
             width: 100%;
-            max-width: 500px; 
-            margin-bottom: 35px;
-            border-radius: 12px; 
-            overflow: hidden; 
-            box-shadow: 0 6px 12px rgba(0,0,0,0.1); 
-            background-color: #000;
-            aspect-ratio: 16 / 9; 
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+            background: #000;
+            aspect-ratio: 16/9;
+            margin-top: 20px;
         }
-        
-        .video-container iframe {
+        .video-container iframe { width: 100%; height: 100%; border: none; display: block; }
+
+        .btn-container { display: flex; justify-content: center; margin-top: 20px; }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px 35px;
+            font-size: 16px;
+            font-weight: 600;
+            text-decoration: none;
+            border-radius: 50px;
+            cursor: pointer;
             width: 100%;
-            height: 100%;
+            max-width: 300px;
+            transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+            color: #fff;
+            background: #1e293b;
             border: none;
-            display: block;
+            box-shadow: 0 4px 6px rgba(30,41,59,0.2);
+            font-family: 'Poppins', sans-serif;
+        }
+        .btn:hover {
+            background: #0f172a;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 15px rgba(30,41,59,0.3);
+        }
+
+        @media (max-width: 700px) {
+            .caption-overlay { display: none; }
+            .step-nav {
+                left: 18px;
+                right: 18px;
+                top: auto;
+                bottom: 24px;
+                width: auto;
+                gap: 6px;
+                transform: none;
+            }
+            .step-card {
+                padding: 8px 0 8px 12px;
+            }
+            .step-card:not(.active) .step-card-body {
+                display: none;
+            }
+            .step-card-title {
+                margin-bottom: 0;
+                font-size: 13px;
+            }
+            .step-counter { display: none; }
+            .label-right, .label-left, .label-bottom { display: none; }
+            .company-header { padding: 16px 20px; }
         }
     </style>
 </head>
 <body>
 
-    <header class="company-header">
-        <div class="company-name">Our name?</div>
-    </header>
+<div class="progress-bar" id="progressBar"></div>
 
-    <main class="container">
-        <h2>How to convert your powerbank into a charging station?</h2>
-        
-        <div class="safety-note">
-            <span class="icon-warning">⚠️</span>
-            <span><strong>Safety warning:</strong> Ensure your power bank is fully discharged (0%) before beginning. Do not use metal knives or sharp tools.</span>
+<header class="company-header">
+    <div class="company-name">Circular Power</div>
+    <a href="index.html" class="header-back">← Home</a>
+</header>
+
+<!-- Hero -->
+<section class="hero" id="hero">
+    <div class="hero-eyebrow" id="heroEyebrow">Modular Conversion Manual</div>
+    <h1 id="heroTitle">From power bank<br>to charging station.</h1>
+    <p id="heroSub">Scroll to see every component come apart — and come together again as something new.</p>
+    <div class="scroll-hint" id="scrollHint">
+        <span>Scroll</span>
+        <div class="scroll-line"></div>
+    </div>
+</section>
+
+<!-- Scroll animation stage -->
+<section class="scroll-stage" id="scrollStage">
+    <div class="scroll-pin-wrapper" id="pinWrapper">
+        <div class="product-canvas" id="productCanvas">
+            <canvas class="sequence-canvas" id="sequenceCanvas" aria-label="Power bank conversion animation"></canvas>
+
+            <!-- Labels per frame -->
+            <div class="step-label label-right" id="label-0">
+                <div class="step-label-inner">
+                    <div class="step-label-line"></div>
+                    <div class="step-label-text">USB-C port</div>
+                </div>
+            </div>
+
+            <div class="step-label label-bottom" id="label-1">
+                <div class="step-label-inner">
+                    <div class="step-label-line"></div>
+                    <div class="step-label-text">6 screws</div>
+                </div>
+            </div>
+
+            <div class="step-label label-right" id="label-2a" style="top: 65%;">
+                <div class="step-label-inner">
+                    <div class="step-label-line"></div>
+                    <div class="step-label-text">Li-ion cells</div>
+                </div>
+            </div>
+
+            <div class="step-label label-right" id="label-2b" style="top: 25%;">
+                <div class="step-label-inner">
+                    <div class="step-label-line"></div>
+                    <div class="step-label-text">Wireless coil</div>
+                </div>
+            </div>
+
+            <div class="step-label label-right" id="label-4">
+                <div class="step-label-inner">
+                    <div class="step-label-line"></div>
+                    <div class="step-label-text">Charging station</div>
+                </div>
+            </div>
         </div>
-        
-        <ol class="instruction-list">
-            <li><strong>The Unlock:</strong> Locate the standard micro-screws at the base of the device. Using the provided bit, remove the screws to release the snap-fit exterior shell.</li>
-            <li><strong>The Core Extraction:</strong> Gently open the casing. You will see the battery shell and the magnetic core module. Carefully disconnect the solderless plug (JST connector) linking the two halves.</li>
-            <li><strong>The Upgrade:</strong> Take the intact magnetic core module and press it into your weighted desktop dock. Plug the USB-C cable directly into the core.</li>
-            <li><strong>Power On:</strong> Your device is now a permanent, your own MagSafe charging station.</li>
-        </ol>
 
-        <div class="video-container">
-            <iframe 
-                src="https://www.youtube.com/embed/28lrIe_l5Bc" 
-                title="Conversion manual" 
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                allowfullscreen>
-            </iframe>
+        <!-- Step counter -->
+        <div class="step-counter" id="stepCounter">
+            <div class="step-counter-num" id="stepNum">01</div>
+            <div class="step-counter-label">of 05</div>
         </div>
-        
-        <a href="index.html" class="btn btn-secondary">Go back</a>
-    </main>
 
+        <div class="step-nav" aria-label="Conversion steps">
+            <div class="step-card active" id="step-card-0">
+                <div class="step-card-kicker">Step 01</div>
+                <div class="step-card-title">The assembled unit</div>
+                <div class="step-card-body">A compact enclosure with Li-ion cells, wireless charging coil, and USB-C core.</div>
+            </div>
+
+            <div class="step-card" id="step-card-1">
+                <div class="step-card-kicker">Step 02</div>
+                <div class="step-card-title">Unfasten the chassis</div>
+                <div class="step-card-body">Remove the six screws using a non-conductive tool.</div>
+            </div>
+
+            <div class="step-card" id="step-card-2">
+                <div class="step-card-kicker">Step 03</div>
+                <div class="step-card-title">Expose the internals</div>
+                <div class="step-card-body">Lift the cover and separate the battery carriage from the charging core.</div>
+            </div>
+
+            <div class="step-card" id="step-card-3">
+                <div class="step-card-kicker">Step 04</div>
+                <div class="step-card-title">Form the stand</div>
+                <div class="step-card-body">Insert the cover into the angled groove to create a stable dock angle.</div>
+            </div>
+
+            <div class="step-card" id="step-card-4">
+                <div class="step-card-kicker">Step 05</div>
+                <div class="step-card-title">Your charging station</div>
+                <div class="step-card-body">Connect USB-C directly to the core and reuse the shell as a desktop dock.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Spacer with captions -->
+    <div class="caption-spacer">
+        <div class="caption-overlay" id="cap-0" style="top: 5vh;">
+            <div class="caption-step">Step 01</div>
+            <div class="caption-title">The assembled unit</div>
+            <div class="caption-body">A compact polycarbonate enclosure housing two Li-ion cells, a wireless charging coil, and a USB-C core — all held together by six screws.</div>
+        </div>
+
+        <div class="caption-overlay" id="cap-1" style="top: 25vh;">
+            <div class="caption-step">Step 02</div>
+            <div class="caption-title">Unfasten the chassis</div>
+            <div class="caption-body">Place the device upside down. Unscrew the six retaining screws around the bottom plate using a non-conductive tool.</div>
+        </div>
+
+        <div class="caption-overlay" id="cap-2" style="top: 45vh;">
+            <div class="caption-step">Step 03</div>
+            <div class="caption-title">Expose the internals</div>
+            <div class="caption-body">Lift the flat top cover vertically to reveal the wireless coil assembly and battery carriage. Extract both cylindrical Li-ion cells from the carriage — do not crush or puncture.</div>
+        </div>
+
+        <div class="caption-overlay" id="cap-3" style="top: 65vh;">
+            <div class="caption-step">Step 04</div>
+            <div class="caption-title">Form the stand</div>
+            <div class="caption-body">Insert the bottom edge of the top cover into the angled groove inside the main base block. It clicks into a stable resting angle.</div>
+        </div>
+
+        <div class="caption-overlay" id="cap-4" style="top: 80vh;">
+            <div class="caption-step">Step 05</div>
+            <div class="caption-title">Your charging station</div>
+            <div class="caption-body">Connect a USB-C cable directly to the core. Your degraded power bank has become a permanent desktop dock — zero new materials required.</div>
+        </div>
+    </div>
+</section>
+
+<!-- Post-animation content -->
+<section class="post-content">
+    <div class="post-inner">
+
+        <div style="text-align:center; margin-bottom: 10px;">
+            <h2>Full Conversion Guide</h2>
+            <p style="color:#475569;">Safety instructions, step-by-step details, and e-waste guidance.</p>
+        </div>
+
+        <div class="section-card">
+            <h3>1. Critical Safety Warnings</h3>
+            <div class="safety-note">
+                <span class="icon-warning">⚠️</span>
+                <div><strong>Hazard Identification:</strong> Lithium-ion batteries carry significant chemical and electrical risks if mishandled. Read all hazards before attempting physical conversion.</div>
+            </div>
+            <ul class="warning-list">
+                <li><strong>Thermal Runaway:</strong> Overheating or physical damage may cause the battery to explode or leak flammable contents.</li>
+                <li><strong>Toxic Gas Emission:</strong> Ruptured cells emit highly toxic combustion by-products.</li>
+                <li><strong>Warning Signs:</strong> If the battery emits an unusual smell, feels hot, or bubbles, stop immediately.</li>
+                <li><strong>Short Circuit Vulnerability:</strong> Never connect the positive and negative terminals with a metallic object.</li>
+            </ul>
+        </div>
+
+        <div class="section-card">
+            <h3>2. Preparation & PPE</h3>
+            <p>Before opening the device enclosure, ensure you have established a safe working environment.</p>
+            <ul style="padding-left: 20px; margin-top: 12px;">
+                <li><strong>Discharge the Device:</strong> Ensure the battery is discharged to between 10% and 50% capacity.</li>
+                <li><strong>Remove Conductive Items:</strong> Remove rings, watches, and metallic jewelry to prevent arcing.</li>
+                <li><strong>Insulate Your Tools:</strong> Use only non-conductive tools. Do not place metal tools near the battery cells.</li>
+                <li><strong>Workstation:</strong> Perform the conversion in a dry, well-ventilated area. Have a fireproof safety bag ready.</li>
+            </ul>
+        </div>
+
+        <div class="section-card">
+            <h3>3. Safe Storage and E-Waste Routing</h3>
+            <p>The extracted lithium-ion cells remain dangerous even when depleted. Please follow reverse logistics protocols:</p>
+            <ul style="padding-left: 20px; margin-top: 12px;">
+                <li><strong>Terminal Insulation:</strong> Immediately insulate both terminals of the extracted cells with adhesive tape to prevent shorting.</li>
+                <li><strong>Safe Storage:</strong> Place the taped batteries into a fireproof safety bag and store in a cool, dry place.</li>
+                <li><strong>Responsible Disposal:</strong> Never dispose of lithium-ion batteries in standard trash. Use our locator tool to find a certified e-waste drop-off facility.</li>
+            </ul>
+        </div>
+
+        <div class="section-card" style="padding-bottom: 10px;">
+            <h3 style="border:none; text-align:center;">Video Walkthrough</h3>
+            <div class="video-container">
+                <iframe src="https://www.youtube.com/embed/28lrIe_l5Bc" title="Conversion manual" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            </div>
+        </div>
+
+        <div class="btn-container">
+            <a href="index.html" class="btn">Return Home</a>
+        </div>
+
+    </div>
+</section>
+
+<script>
+gsap.registerPlugin(ScrollTrigger);
+
+// Hero entrance
+gsap.timeline({ delay: 0.3 })
+    .to('#heroEyebrow', { opacity: 1, y: 0, duration: 0.7, ease: 'power2.out' })
+    .to('#heroTitle',   { opacity: 1, y: 0, duration: 0.8, ease: 'power2.out' }, '-=0.4')
+    .to('#heroSub',     { opacity: 1, y: 0, duration: 0.7, ease: 'power2.out' }, '-=0.4')
+    .to('#scrollHint',  { opacity: 1, duration: 0.6 }, '-=0.2');
+
+// Set initial states
+gsap.set(['#heroEyebrow','#heroTitle','#heroSub'], { y: 30 });
+
+// Canvas image sequence configuration
+let frameCount = 101;
+let frameBasePath = './';
+const frameState = { index: 0 };
+const imageSequence = {
+    currentFrame: -1,
+    renderedIndex: -1,
+    images: [],
+    isDirty: true,
+    loadedCount: 0,
+    isFallback: false,
+    sourcePaths: []
+};
+
+const frameBaseCandidates = [
+    './',
+    './frames/',
+    './images/',
+    './assets/',
+    './assets/frames/'
+];
+
+const fallbackFramePaths = [
+    'assembled_transparent.png',
+    'funky_explosion_no_shadow.png',
+    'exploded_view_transparent.png',
+    'stand_back_transparent.png',
+    'stand_front_transparent.png'
+];
+
+const canvas = document.getElementById('sequenceCanvas');
+const context = canvas.getContext('2d');
+const productCanvas = document.getElementById('productCanvas');
+
+function framePath(index) {
+    return imageSequence.sourcePaths[index];
+}
+
+function testImage(src) {
+    return new Promise((resolve) => {
+        const img = new Image();
+        img.onload = () => resolve(true);
+        img.onerror = () => resolve(false);
+        img.src = src;
+    });
+}
+
+async function resolveFrameSources() {
+    for (const candidate of frameBaseCandidates) {
+        const firstFrame = `${candidate}frame_000.png`;
+        if (await testImage(firstFrame)) {
+            frameBasePath = candidate;
+            frameCount = 101;
+            imageSequence.isFallback = false;
+            imageSequence.sourcePaths = Array.from(
+                { length: frameCount },
+                (_, index) => `${frameBasePath}frame_${String(index).padStart(3, '0')}.png`
+            );
+            return;
+        }
+    }
+
+    console.warn('No frame_000.png sequence found. Falling back to existing product images.');
+    frameCount = fallbackFramePaths.length;
+    imageSequence.isFallback = true;
+    imageSequence.sourcePaths = fallbackFramePaths;
+}
+
+function preloadFrames() {
+    imageSequence.images = [];
+    imageSequence.loadedCount = 0;
+    imageSequence.currentFrame = -1;
+    imageSequence.isDirty = true;
+
+    for (let i = 0; i < frameCount; i++) {
+        const img = new Image();
+
+        img.onload = () => {
+            imageSequence.loadedCount += 1;
+            if (i === 0 || imageSequence.currentFrame === i) {
+                imageSequence.isDirty = true;
+            }
+        };
+
+        img.onerror = () => {
+            console.warn(`Could not load animation frame: ${img.src}`);
+        };
+
+        img.src = framePath(i);
+        imageSequence.images[i] = img;
+    }
+}
+
+function resizeCanvas() {
+    const pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
+    const { width, height } = productCanvas.getBoundingClientRect();
+    const nextWidth = Math.round(width * pixelRatio);
+    const nextHeight = Math.round(height * pixelRatio);
+
+    if (canvas.width !== nextWidth || canvas.height !== nextHeight) {
+        canvas.width = nextWidth;
+        canvas.height = nextHeight;
+        imageSequence.isDirty = true;
+    }
+}
+
+function getContainedImageRect(image) {
+    const canvasRatio = canvas.width / canvas.height;
+    const imageRatio = image.naturalWidth / image.naturalHeight;
+    let width = canvas.width;
+    let height = canvas.height;
+    let x = 0;
+    let y = 0;
+
+    if (imageRatio > canvasRatio) {
+        height = canvas.width / imageRatio;
+        y = (canvas.height - height) / 2;
+    } else {
+        width = canvas.height * imageRatio;
+        x = (canvas.width - width) / 2;
+    }
+
+    return { x, y, width, height };
+}
+
+function drawImageContained(image, alpha = 1) {
+    if (!image || !image.complete || image.naturalWidth === 0) return false;
+
+    const rect = getContainedImageRect(image);
+
+    context.save();
+    context.globalAlpha = alpha;
+    context.drawImage(image, rect.x, rect.y, rect.width, rect.height);
+    context.restore();
+
+    return true;
+}
+
+function drawFrame(index) {
+    const image = imageSequence.images[index];
+    context.clearRect(0, 0, canvas.width, canvas.height);
+    drawImageContained(image);
+}
+
+function drawBlendedFrame(index) {
+    if (!imageSequence.isFallback) {
+        drawFrame(Math.round(index));
+        return;
+    }
+
+    const lowerFrame = Math.floor(index);
+    const upperFrame = Math.min(frameCount - 1, lowerFrame + 1);
+    const progressToNext = index - lowerFrame;
+    const blendWindow = 1.0;
+    const rawBlend = gsap.utils.clamp(0, 1, (progressToNext - (1 - blendWindow)) / blendWindow);
+    const blend = gsap.parseEase('power2.inOut')(rawBlend);
+    const lowerImage = imageSequence.images[lowerFrame];
+    const upperImage = imageSequence.images[upperFrame];
+
+    context.clearRect(0, 0, canvas.width, canvas.height);
+
+    const drewLower = drawImageContained(lowerImage, 1 - blend);
+    if (blend > 0 && upperFrame !== lowerFrame) {
+        const drewUpper = drawImageContained(upperImage, blend);
+        if (!drewLower && drewUpper) return;
+    }
+}
+
+function renderSequence() {
+    const nextIndex = gsap.utils.clamp(0, frameCount - 1, frameState.index);
+
+    if (!imageSequence.isDirty && Math.abs(nextIndex - imageSequence.renderedIndex) < 0.001) return;
+
+    imageSequence.currentFrame = Math.round(nextIndex);
+    imageSequence.renderedIndex = nextIndex;
+    imageSequence.isDirty = false;
+    resizeCanvas();
+    drawBlendedFrame(nextIndex);
+}
+
+// Step overlay configuration
+const labels = [
+    ['label-0'],
+    ['label-1'],
+    ['label-2a','label-2b'],
+    [],
+    ['label-4']
+];
+const captions = ['cap-0','cap-1','cap-2','cap-3','cap-4'];
+const stepCards = ['step-card-0','step-card-1','step-card-2','step-card-3','step-card-4'];
+
+let currentStep = 0;
+
+function showStep(idx) {
+    if (idx === currentStep) return;
+
+    // swap labels
+    labels[currentStep].forEach(id => document.getElementById(id)?.classList.remove('visible'));
+    labels[idx].forEach(id => document.getElementById(id)?.classList.add('visible'));
+
+    // swap captions
+    document.getElementById(captions[currentStep])?.classList.remove('visible');
+    document.getElementById(captions[idx])?.classList.add('visible');
+
+    // highlight persistent step list
+    document.getElementById(stepCards[currentStep])?.classList.remove('active');
+    document.getElementById(stepCards[idx])?.classList.add('active');
+
+    // step counter
+    document.getElementById('stepNum').textContent = String(idx + 1).padStart(2, '0');
+
+    currentStep = idx;
+}
+
+// Show first caption and labels on load
+document.getElementById(captions[0]).classList.add('visible');
+labels[0].forEach(id => document.getElementById(id)?.classList.add('visible'));
+document.getElementById(stepCards[0])?.classList.add('active');
+document.getElementById('stepCounter').style.opacity = '1';
+
+// Main scroll trigger
+const totalSteps = captions.length;
+
+async function initSequenceAnimation() {
+    await resolveFrameSources();
+    preloadFrames();
+    resizeCanvas();
+    renderSequence();
+    gsap.ticker.add(renderSequence);
+
+    window.addEventListener('resize', () => {
+        resizeCanvas();
+        ScrollTrigger.refresh();
+    });
+
+    gsap.to(frameState, {
+        index: frameCount - 1,
+        ease: 'none',
+        scrollTrigger: {
+            trigger: '#scrollStage',
+            start: 'top top',
+            end: '+=300%',
+            pin: '#pinWrapper',
+            scrub: 1,
+            onUpdate: (self) => {
+                const progress = self.progress;
+                const stepIdx = Math.min(totalSteps - 1, Math.floor(progress * totalSteps));
+                showStep(stepIdx);
+
+                // progress bar
+                document.getElementById('progressBar').style.width = (progress * 100) + '%';
+            }
+        }
+    });
+
+    ScrollTrigger.refresh();
+}
+
+initSequenceAnimation();
+
+// Fade out scroll hint on first scroll
+ScrollTrigger.create({
+    trigger: '#scrollStage',
+    start: 'top 80%',
+    onEnter: () => gsap.to('#scrollHint', { opacity: 0, duration: 0.4 })
+});
+
+</script>
 </body>
 </html>

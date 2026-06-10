@@ -3,30 +3,45 @@ body, html {
     padding: 0;
     height: 100%;
     font-family: 'Poppins', sans-serif;
-    background-color: #f8fafc;
-    color: #1e293b; 
+    background-color: #000;
+    color: #f0f4f8; 
     -webkit-font-smoothing: antialiased;
 }
 
 .company-header {
-    position: absolute;
+    position: fixed;
     top: 0;
-    width: 100%;
-    background-color: #ffffff;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-    z-index: 100; 
+    left: 0;
+    right: 0;
+    padding: 20px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.85) 0%, transparent 100%);
+    z-index: 200; 
 }
 
 .company-name {
-    text-align: center;
-    padding: 25px 0;
-    font-size: 28px;
+    font-size: 20px;
     font-weight: 700; 
     color: #0d9488; 
-    letter-spacing: 1.5px;
+    letter-spacing: 3px;
     text-transform: uppercase;
+    position: relative;
+    z-index: 1;
 }
 
+.header-back {
+    position: relative;
+    z-index: 1;
+    font-size: 13px;
+    color: rgba(255,255,255,0.5);
+    text-decoration: none;
+    letter-spacing: 1px;
+    transition: color 0.2s;
+}
+
+.header-back:hover { color: #0d9488; }
 
 .container {
     display: flex;
@@ -35,21 +50,23 @@ body, html {
     align-items: center;
     min-height: 100vh; 
     gap: 25px;
-    padding: 140px 20px 50px 20px; 
+    padding: 100px 20px 50px 20px; 
     box-sizing: border-box; 
+    position: relative;
 }
 
 h2 {
-    font-weight: 600;
-    color: #0f172a;
+    font-weight: 700;
+    color: #fff;
     margin-bottom: 10px;
     text-align: center; 
+    font-size: 32px;
 }
 
 p {
     font-size: 16px;
-    line-height: 1.6;
-    color: #475569;
+    line-height: 1.7;
+    color: rgba(255,255,255,0.5);
 }
 
 .btn {
@@ -67,6 +84,7 @@ p {
     box-sizing: border-box;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+    font-family: 'Poppins', sans-serif;
 }
 
 .icon {
@@ -75,7 +93,7 @@ p {
 }
 
 .btn-primary {
-    color: white;
+    color: #000;
     background-color: #0d9488; 
     border: none;
 }
@@ -83,11 +101,11 @@ p {
 .btn-primary:hover {
     background-color: #0f766e;
     transform: translateY(-3px); 
-    box-shadow: 0 10px 15px rgba(13, 148, 136, 0.2); 
+    box-shadow: 0 10px 20px rgba(13, 148, 136, 0.3); 
 }
 
 .btn-secondary {
-    color: white;
+    color: #fff;
     background-color: #1e293b; 
     border: none;
 }
@@ -95,7 +113,7 @@ p {
 .btn-secondary:hover {
     background-color: #0f172a;
     transform: translateY(-3px);
-    box-shadow: 0 10px 15px rgba(30, 41, 59, 0.2);
+    box-shadow: 0 10px 15px rgba(0,0,0, 0.3);
 }
 
 .btn-outline {
@@ -106,11 +124,90 @@ p {
 }
 
 .btn-outline:hover {
-    background-color: #f0fdfa; 
+    background-color: rgba(13, 148, 136, 0.1); 
     transform: translateY(-3px);
 }
 
 .btn:active {
     transform: translateY(-1px); 
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+}
+
+/* Index page specific */
+.index-container {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 60px;
+}
+
+.hero-content {
+    max-width: 500px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.hero-content h1 {
+    font-size: clamp(36px, 6vw, 64px);
+    font-weight: 700;
+    line-height: 1.05;
+    letter-spacing: -1px;
+    color: #fff;
+    margin: 0 0 20px 0;
+}
+
+.hero-content p {
+    font-size: 18px;
+    font-weight: 300;
+    margin-bottom: 40px;
+}
+
+.button-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    width: 100%;
+}
+
+.hero-image-container {
+    perspective: 1000px;
+}
+
+.hero-image {
+    max-width: 100%;
+    width: 450px;
+    height: auto;
+    animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+    0% { transform: translateY(0px) rotateY(0deg); }
+    50% { transform: translateY(-20px) rotateY(5deg); }
+    100% { transform: translateY(0px) rotateY(0deg); }
+}
+
+@media (max-width: 900px) {
+    .index-container {
+        flex-direction: column-reverse;
+        text-align: center;
+        padding-top: 120px;
+    }
+    .hero-content {
+        align-items: center;
+    }
+    .hero-content h1 {
+        text-align: center;
+    }
+    .hero-content p {
+        text-align: center;
+    }
+    .button-group {
+        justify-content: center;
+    }
+    .hero-image {
+        width: 300px;
+    }
+    .company-header {
+        padding: 16px 20px;
+    }
 }
