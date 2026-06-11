@@ -3,27 +3,1260 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About Us | MagSaved</title>
-    
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    <title>About the Product | MagSaved</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --teal: #0d9488;
+            --teal-dim: rgba(13,148,136,0.15);
+            --teal-mid: rgba(13,148,136,0.4);
+            --white: #f0f4f8;
+            --muted: rgba(240,244,248,0.45);
+            --very-muted: rgba(240,244,248,0.15);
+            --bg: #000;
+            --bg-surface: #0b0b0b;
+            --bg-card: #111;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--bg);
+            color: var(--white);
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        /* ─── NAV ─────────────────────────────── */
+        .nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 200;
+            padding: 20px 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .nav::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.9) 0%, transparent 100%);
+            pointer-events: none;
+        }
+        .nav-logo {
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--teal);
+            position: relative;
+            z-index: 1;
+            text-decoration: none;
+        }
+        .nav-link {
+            position: relative;
+            z-index: 1;
+            font-size: 13px;
+            color: var(--muted);
+            text-decoration: none;
+            letter-spacing: 1px;
+            transition: color 0.2s;
+        }
+        .nav-link:hover { color: var(--teal); }
+
+        /* ─── HERO ────────────────────────────── */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 120px 24px 80px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-bg-ring {
+            position: absolute;
+            width: min(700px, 90vw);
+            height: min(700px, 90vw);
+            border: 1px solid var(--teal-dim);
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+        }
+        .hero-bg-ring:nth-child(2) {
+            width: min(500px, 66vw);
+            height: min(500px, 66vw);
+            border-color: rgba(13,148,136,0.08);
+        }
+        .hero-bg-ring:nth-child(3) {
+            width: min(300px, 44vw);
+            height: min(300px, 44vw);
+            border-color: rgba(13,148,136,0.06);
+        }
+
+        .hero-eyebrow {
+            font-size: 11px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--teal);
+            margin-bottom: 20px;
+            opacity: 0;
+            transform: translateY(16px);
+        }
+
+        .hero-title {
+            font-size: clamp(40px, 7vw, 88px);
+            font-weight: 900;
+            line-height: 1.0;
+            letter-spacing: -2px;
+            color: var(--white);
+            max-width: 820px;
+            opacity: 0;
+            transform: translateY(24px);
+        }
+
+        .hero-title em {
+            font-style: normal;
+            color: var(--teal);
+        }
+
+        .hero-sub {
+            margin-top: 28px;
+            font-size: 17px;
+            font-weight: 300;
+            color: var(--muted);
+            max-width: 480px;
+            line-height: 1.75;
+            opacity: 0;
+            transform: translateY(16px);
+        }
+
+        .hero-badges {
+            display: flex;
+            gap: 12px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+            justify-content: center;
+            opacity: 0;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 8px 16px;
+            border: 1px solid var(--teal-mid);
+            border-radius: 100px;
+            font-size: 12px;
+            letter-spacing: 1px;
+            color: var(--teal);
+            background: var(--teal-dim);
+        }
+        .badge-dot {
+            width: 6px; height: 6px;
+            background: var(--teal);
+            border-radius: 50%;
+        }
+
+        .hero-scroll {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            opacity: 0;
+        }
+        .hero-scroll span {
+            font-size: 11px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--very-muted);
+        }
+        .scroll-line {
+            width: 1px;
+            height: 48px;
+            background: linear-gradient(to bottom, rgba(13,148,136,0.5), transparent);
+            animation: pulse 2s ease-in-out infinite;
+        }
+        @keyframes pulse {
+            0%,100% { opacity: 0.5; transform: scaleY(1); }
+            50% { opacity: 1; transform: scaleY(0.7); }
+        }
+
+        /* ─── LIFECYCLE SPINE ─────────────────── */
+        /* A vertical teal line that progresses as you read — the signature element */
+        .spine-wrapper {
+            position: fixed;
+            left: 28px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0;
+            height: 200px;
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+        .spine-wrapper.visible { opacity: 1; }
+
+        .spine-track {
+            width: 1px;
+            height: 160px;
+            background: var(--very-muted);
+            position: relative;
+            border-radius: 1px;
+        }
+        .spine-fill {
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            background: var(--teal);
+            height: 0%;
+            border-radius: 1px;
+            transition: height 0.1s linear;
+        }
+        .spine-label {
+            font-size: 9px;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            color: var(--very-muted);
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            transform: rotate(180deg);
+            margin-top: 8px;
+            user-select: none;
+        }
+
+        /* ─── PHASES ──────────────────────────── */
+        .phases {
+            padding: 0 0 80px;
+        }
+
+        .phase {
+            min-height: 100vh;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            align-items: center;
+            gap: 0;
+            position: relative;
+        }
+
+        @media (max-width: 768px) {
+            .phase {
+                grid-template-columns: 1fr;
+                min-height: auto;
+                padding: 80px 24px;
+            }
+        }
+
+        .phase:nth-child(even) .phase-text { order: 2; }
+        .phase:nth-child(even) .phase-visual { order: 1; }
+
+        @media (max-width: 768px) {
+            .phase:nth-child(even) .phase-text { order: 1; }
+            .phase:nth-child(even) .phase-visual { order: 2; }
+        }
+
+        .phase-text {
+            padding: clamp(48px, 8vw, 100px) clamp(32px, 6vw, 80px);
+        }
+
+        .phase-kicker {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            opacity: 0;
+            transform: translateX(-20px);
+        }
+        .phase-kicker-line {
+            width: 32px;
+            height: 1px;
+            background: var(--teal);
+        }
+        .phase-kicker-text {
+            font-size: 10px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--teal);
+        }
+
+        .phase-title {
+            font-size: clamp(28px, 4vw, 50px);
+            font-weight: 700;
+            line-height: 1.1;
+            letter-spacing: -0.5px;
+            color: var(--white);
+            margin-bottom: 20px;
+            opacity: 0;
+            transform: translateY(24px);
+        }
+
+        .phase-body {
+            font-size: 15px;
+            font-weight: 300;
+            color: var(--muted);
+            line-height: 1.8;
+            max-width: 460px;
+            opacity: 0;
+            transform: translateY(16px);
+        }
+
+        .phase-body strong {
+            color: var(--white);
+            font-weight: 600;
+        }
+
+        .phase-stat {
+            margin-top: 32px;
+            display: flex;
+            gap: 32px;
+            opacity: 0;
+            transform: translateY(12px);
+        }
+
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .stat-value {
+            font-size: 36px;
+            font-weight: 700;
+            color: var(--teal);
+            line-height: 1;
+            letter-spacing: -1px;
+        }
+        .stat-label {
+            font-size: 11px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--very-muted);
+        }
+
+        /* ─── PHASE VISUALS ───────────────────── */
+        .phase-visual {
+            height: 100%;
+            min-height: 60vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        @media (max-width: 768px) {
+            .phase-visual {
+                min-height: 300px;
+            }
+        }
+
+        .visual-card {
+            width: min(380px, 80%);
+            aspect-ratio: 1;
+            position: relative;
+            opacity: 0;
+            transform: scale(0.92);
+        }
+
+        /* Life phases — Phase 1 visual (powerbank) */
+        .vis-powerbank {
+            background: var(--bg-card);
+            border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 32px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            width: 100%;
+            height: 100%;
+        }
+        .vis-powerbank-body {
+            width: 120px;
+            height: 56px;
+            background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+            border-radius: 16px;
+            border: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+        }
+        .vis-powerbank-led {
+            width: 8px; height: 8px;
+            background: var(--teal);
+            border-radius: 50%;
+            box-shadow: 0 0 12px var(--teal);
+            animation: blink 2s ease-in-out infinite;
+        }
+        @keyframes blink {
+            0%,100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+        .vis-powerbank-port {
+            width: 12px; height: 5px;
+            background: #0d9488;
+            border-radius: 3px;
+            position: absolute;
+            bottom: -3px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        .vis-label {
+            font-size: 11px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--muted);
+        }
+
+        /* Phase 2 visual (lifespan / magnets) */
+        .vis-magnet {
+            width: 100%;
+            height: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: var(--bg-card);
+            border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 32px;
+            gap: 16px;
+            padding: 32px;
+        }
+        .vis-magnet-rings {
+            position: relative;
+            width: 140px;
+            height: 140px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .mag-ring {
+            position: absolute;
+            border-radius: 50%;
+            border: 1px solid var(--teal-mid);
+            animation: expandRing 3s ease-in-out infinite;
+        }
+        .mag-ring:nth-child(1) { width: 140px; height: 140px; animation-delay: 0s; }
+        .mag-ring:nth-child(2) { width: 100px; height: 100px; animation-delay: 0.6s; }
+        .mag-ring:nth-child(3) { width: 60px; height: 60px; animation-delay: 1.2s; border-color: rgba(13,148,136,0.7); }
+        .mag-center {
+            width: 28px; height: 28px;
+            background: var(--teal);
+            border-radius: 50%;
+            box-shadow: 0 0 20px rgba(13,148,136,0.8);
+            z-index: 1;
+        }
+        @keyframes expandRing {
+            0%,100% { opacity: 0.5; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.06); }
+        }
+        .vis-lifeline {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .vis-lifeline-segment {
+            height: 4px;
+            border-radius: 2px;
+            background: var(--teal);
+        }
+        .vis-lifeline-segment.phase1 { width: 60px; }
+        .vis-lifeline-segment.phase2 { width: 60px; opacity: 0.5; border: 1px dashed var(--teal); background: transparent; }
+        .vis-lifeline-label {
+            font-size: 9px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--muted);
+        }
+
+        /* Phase 3 visual (conversion) */
+        .vis-convert {
+            width: 100%;
+            height: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: var(--bg-card);
+            border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 32px;
+            gap: 12px;
+        }
+        .vis-steps-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .vis-step-icon {
+            width: 48px; height: 48px;
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.1);
+            background: #1a1a1a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+        }
+        .vis-step-icon.active {
+            border-color: var(--teal);
+            background: var(--teal-dim);
+        }
+        .vis-arrow {
+            font-size: 14px;
+            color: var(--teal);
+        }
+        .vis-time-badge {
+            margin-top: 8px;
+            padding: 6px 16px;
+            background: var(--teal-dim);
+            border: 1px solid var(--teal-mid);
+            border-radius: 100px;
+            font-size: 12px;
+            color: var(--teal);
+            letter-spacing: 1px;
+        }
+
+        /* Phase 4 visual (PHA compost) */
+        .vis-pha {
+            width: 100%;
+            height: 100%;
+            background: var(--bg-card);
+            border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 32px;
+            padding: 32px;
+
+            display: grid;
+            grid-template-columns: 160px 1fr;
+            gap: 32px;
+            align-items: center;
+        }
+        .pha-cycle {
+            position: relative;
+            width: 150px;
+            height: 150px;
+        }
+        .pha-cycle svg {
+            width: 100%;
+            height: 100%;
+        }
+        .pha-comparison {
+            display: flex;
+            gap: 20px;
+        }
+        .pha-col {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+        }
+        .pha-col-label {
+            font-size: 9px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+        .pha-col.bad .pha-col-label { color: rgba(248,113,113,0.7); }
+        .pha-col.good .pha-col-label { color: var(--teal); }
+        .pha-bar-wrap {
+            width: 40px;
+            height: 80px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 4px;
+            display: flex;
+            align-items: flex-end;
+            overflow: hidden;
+        }
+        .pha-bar {
+            width: 100%;
+            border-radius: 4px;
+        }
+        .pha-col.bad .pha-bar { height: 90%; background: rgba(248,113,113,0.4); border: 1px solid rgba(248,113,113,0.3); }
+        .pha-col.good .pha-bar { height: 20%; background: var(--teal); border: 1px solid var(--teal); }
+        .pha-col-sub {
+            font-size: 10px;
+            color: var(--very-muted);
+        }
+
+        /* ─── DIVIDER ─────────────────────────── */
+        .phase-divider {
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(to right, transparent, var(--very-muted), transparent);
+        }
+
+        /* ─── LIFECYCLE BAR ───────────────────── */
+        .lifecycle-section {
+            padding: 80px 24px;
+            text-align: center;
+        }
+        .lifecycle-eyebrow {
+            font-size: 11px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--teal);
+            margin-bottom: 16px;
+        }
+        .lifecycle-title {
+            font-size: clamp(24px, 4vw, 42px);
+            font-weight: 700;
+            color: var(--white);
+            margin-bottom: 56px;
+        }
+        .lifecycle-track {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+        }
+        .lifecycle-bar-row {
+            display: flex;
+            align-items: stretch;
+            border-radius: 12px;
+            overflow: hidden;
+            height: 72px;
+            box-shadow: 0 0 0 1px var(--very-muted);
+        }
+        .lc-segment {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            padding: 0 16px;
+            font-size: 11px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            position: relative;
+        }
+        .lc-segment:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            right: 0; top: 20%; bottom: 20%;
+            width: 1px;
+            background: rgba(255,255,255,0.1);
+        }
+        .lc-seg-1 {
+            flex: 2;
+            background: linear-gradient(135deg, #111, #1a1a1a);
+            color: var(--teal);
+        }
+        .lc-seg-2 {
+            flex: 2;
+            background: linear-gradient(135deg, rgba(13,148,136,0.12), rgba(13,148,136,0.2));
+            color: var(--teal);
+        }
+        .lc-seg-3 {
+            flex: 1;
+            background: rgba(13,148,136,0.05);
+            color: var(--muted);
+        }
+        .lc-seg-icon { font-size: 20px; }
+        .lc-seg-name { font-weight: 600; }
+        .lc-seg-sub { font-size: 9px; letter-spacing: 1.5px; opacity: 0.7; }
+
+        .lifecycle-comparison {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 24px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+        .compare-item {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            align-items: flex-start;
+        }
+        .compare-label {
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--muted);
+        }
+        .compare-bar-wrap {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .compare-bar {
+            height: 6px;
+            border-radius: 3px;
+        }
+        .compare-value {
+            font-size: 12px;
+            color: var(--muted);
+        }
+
+        /* ─── SCIENCE NOTE ────────────────────── */
+        .science-section {
+            padding: 80px 24px;
+            background: var(--bg-surface);
+        }
+        .science-inner {
+            max-width: 760px;
+            margin: 0 auto;
+        }
+        .science-header {
+            margin-bottom: 40px;
+            text-align: center;
+        }
+        .science-eyebrow {
+            font-size: 11px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--teal);
+            margin-bottom: 14px;
+        }
+        .science-title {
+            font-size: clamp(22px, 3.5vw, 38px);
+            font-weight: 700;
+            color: var(--white);
+        }
+        .science-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+        @media (max-width: 600px) {
+            .science-grid { grid-template-columns: 1fr; }
+        }
+        .sci-card {
+            padding: 28px;
+            border-radius: 16px;
+            border: 1px solid var(--very-muted);
+            background: var(--bg-card);
+        }
+        .sci-card-icon {
+            font-size: 28px;
+            margin-bottom: 14px;
+        }
+        .sci-card-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--white);
+            margin-bottom: 10px;
+        }
+        .sci-card-body {
+            font-size: 13px;
+            font-weight: 300;
+            color: var(--muted);
+            line-height: 1.7;
+        }
+        .sci-card-body strong {
+            color: var(--white);
+            font-weight: 600;
+        }
+        .sci-card.highlight {
+            border-color: var(--teal-mid);
+            background: var(--teal-dim);
+            grid-column: span 2;
+        }
+        @media (max-width: 600px) {
+            .sci-card.highlight { grid-column: span 1; }
+        }
+        .sci-card.highlight .sci-card-title { color: var(--teal); }
+
+        /* ─── FOOTER CTA ──────────────────────── */
+        .footer-cta {
+            padding: 120px 24px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .footer-cta::before {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 50%;
+            transform: translateX(-50%);
+            width: 600px; height: 300px;
+            background: radial-gradient(ellipse, rgba(13,148,136,0.12) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        .footer-eyebrow {
+            font-size: 11px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--teal);
+            margin-bottom: 20px;
+        }
+        .footer-title {
+            font-size: clamp(32px, 5vw, 64px);
+            font-weight: 900;
+            color: var(--white);
+            letter-spacing: -1px;
+            line-height: 1.05;
+            margin-bottom: 24px;
+        }
+        .footer-title em {
+            color: var(--teal);
+            font-style: normal;
+        }
+        .footer-sub {
+            font-size: 16px;
+            font-weight: 300;
+            color: var(--muted);
+            max-width: 400px;
+            margin: 0 auto 44px;
+            line-height: 1.7;
+        }
+        .btn-row {
+            display: flex;
+            gap: 14px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 15px 32px;
+            font-size: 14px;
+            font-weight: 600;
+            font-family: 'Poppins', sans-serif;
+            border-radius: 100px;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            letter-spacing: 0.5px;
+        }
+        .btn-primary {
+            background: var(--teal);
+            color: #000;
+            border: none;
+        }
+        .btn-primary:hover {
+            background: #0f9f93;
+            transform: translateY(-2px);
+            box-shadow: 0 12px 32px rgba(13,148,136,0.3);
+        }
+        .btn-secondary {
+            background: transparent;
+            color: var(--white);
+            border: 1px solid var(--very-muted);
+        }
+        .btn-secondary:hover {
+            border-color: var(--teal-mid);
+            color: var(--teal);
+            transform: translateY(-2px);
+        }
+
+        /* ─── PROGRESS BAR ────────────────────── */
+        .progress-bar {
+            position: fixed;
+            bottom: 0; left: 0;
+            height: 2px;
+            background: var(--teal);
+            width: 0%;
+            z-index: 300;
+            transition: width 0.05s linear;
+        }
+
+        /* ─── MOBILE ──────────────────────────── */
+        @media (max-width: 768px) {
+            .nav { padding: 16px 20px; }
+            .spine-wrapper { display: none; }
+            .phase-text { padding: 40px 24px 20px; }
+            .phase-stat { flex-wrap: wrap; gap: 20px; }
+        }
+
+        /* ─── ANIMATION STATES ────────────────── */
+        .anim-ready { will-change: transform, opacity; }
+    </style>
 </head>
 <body>
 
-    <header class="company-header">
-        <div class="company-name">MagSaved</div>
-    </header>
+<div class="progress-bar" id="progressBar"></div>
 
-    <main class="container">
-     
-        <h2>About our product</h2>
-        
-        <p style="text-align: center; max-width: 650px; padding: 0 20px 40px 20px; line-height: 1.8; margin: 0 auto; font-weight: 300;">
-            Globally, millions of perfectly functioning neodymium magnets and copper induction coils are thrown into landfills every year simply because the chemical battery attached to them degrades. We believe your tech should adapt, not expire.<br><br>Our modular MagSafe Power Bank is engineered without industrial adhesives, adhering to strict Design for Disassembly principles. When the portable battery reaches its end-of-life, the high-value magnetic core is designed to be easily extracted and reborn as a premium, stationary desktop charger.<br><br>You aren't just buying a power bank; you are investing in a permanent piece of tech infrastructure.
-        </p>
-        
-        <a href="index.html" class="btn btn-primary">Return Home</a>
-    </main>
+<nav class="nav">
+    <a class="nav-logo" href="#">MagSaved</a>
+    <a class="nav-link" href="#">Conversion Manual →</a>
+</nav>
 
+<!-- Lifecycle spine -->
+<div class="spine-wrapper" id="spineWrapper">
+    <div class="spine-track">
+        <div class="spine-fill" id="spineFill"></div>
+    </div>
+    <div class="spine-label">Lifecycle</div>
+</div>
+
+<!-- ═══════════ HERO ═══════════ -->
+<section class="hero" id="hero">
+    <div class="hero-bg-ring"></div>
+    <div class="hero-bg-ring"></div>
+    <div class="hero-bg-ring"></div>
+
+    <div class="hero-eyebrow" id="heroEyebrow">About the product</div>
+    <h1 class="hero-title" id="heroTitle">We have one earth.<br><em>That's why MagSaved has two lifetimes.</em></h1>
+    <p class="hero-sub" id="heroSub">MagSaved begins as a MagSafe power bank. When its battery eventually degrades, it doesn't become waste.</p><br><p class="hero-sub" id="heroSub">It becomes your wireless charger.</p>
+
+    <div class="hero-badges" id="heroBadges">
+        <div class="badge"><div class="badge-dot"></div> Design for Disassembly</div>
+        <div class="badge"><div class="badge-dot"></div> PHA Bioplastic Housing</div>
+    </div>
+
+    <div class="hero-scroll" id="heroScroll">
+        <span>Scroll</span>
+        <div class="scroll-line"></div>
+    </div>
+</section>
+
+
+<!-- ═══════════ LIFECYCLE BAR ═══════════ -->
+<section class="lifecycle-section" id="lifecycleSection">
+    <p class="lifecycle-eyebrow">Product lifetime</p>
+    <h2 class="lifecycle-title">Where other power banks stop, MagSaved continues.</h2>
+    <div class="lifecycle-track">
+        <div class="lifecycle-bar-row">
+            <div class="lc-segment lc-seg-1">
+                <span class="lc-seg-icon">🔋</span>
+                <span class="lc-seg-name">Phase 1</span>
+                <span class="lc-seg-sub">Power bank · ~2 yrs</span>
+            </div>
+            <div class="lc-segment lc-seg-2">
+                <span class="lc-seg-icon">⚡</span>
+                <span class="lc-seg-name">Phase 2</span>
+                <span class="lc-seg-sub">Desktop charger · extended</span>
+            </div>
+            <div class="lc-segment lc-seg-3">
+                <span class="lc-seg-icon">🌱</span>
+                <span class="lc-seg-name">End of life</span>
+                <span class="lc-seg-sub">Compost and Recycle</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="phase-divider"></div>
+
+<!-- ═══════════ PHASES ═══════════ -->
+<section class="phases">
+
+    <!-- PHASE 1 — The power bank -->
+    <div class="phase" id="phase0">
+        <div class="phase-text">
+            <div class="phase-kicker">
+                <div class="phase-kicker-line"></div>
+                <span class="phase-kicker-text">Phase 01 — The power bank</span>
+            </div>
+            <h2 class="phase-title">Premium charging,<br>from day one.</h2>
+            <p class="phase-body">
+                MagSaved snaps to your phone just like any MagSafe accessory — but underneath the surface, it's engineered differently. 
+                Built with a <strong>modular Core and Shell architecture:</strong> the magnets and induction coil live in a long-lasting Core module,
+                while the replaceable battery sits in a separate Shell.
+                <br><br>
+                Unlike standard power banks sealed with industrial glue, MagSaved uses <strong>snap-fit mechanisms and standard screws</strong> — 
+                so there's never a need for heat guns or pry tools when its battery eventually degrades.
+                <br>
+                Better for your safety. Better for the environment.
+            </p>
+            <div class="phase-stat">
+                <div class="stat-item">
+                    <span class="stat-value">6</span>
+                    <span class="stat-label">Screws, no glue</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value">2</span>
+                    <span class="stat-label">Life phases</span>
+                </div>
+            </div>
+        </div>
+        <div class="phase-visual">
+            <div class="visual-card" id="vis0">
+                <div class="vis-powerbank">
+                    <img src="assembled_transparent.png" width = "100%">
+                    <span class="vis-label">MagSaved · Power bank lifespan</span>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+
+    <div class="phase-divider"></div>
+
+    <!-- PHASE 2 — Conversion -->
+    <div class="phase" id="phase2">
+        <div class="phase-text">
+            <div class="phase-kicker">
+                <div class="phase-kicker-line"></div>
+                <span class="phase-kicker-text">Phase 02 — The conversion</span>
+            </div>
+            <h2 class="phase-title">Under 60 seconds.<br>No special tools.</h2>
+            <p class="phase-body">
+                When your MagSaved battery eventually degrades, converting it to a permanent desktop charger is designed to take less than a minute.
+                Unscrew six fasteners, unplug the battery module, and slot the top cover into the angled groove of the base.
+                <br><br>
+                Connect USB-C directly to the Core module — and your charging station is ready. 
+                <br>
+                <strong>No new materials. No new electronics. No waste.</strong>
+                <br>
+                The shell that housed the battery becomes the stand.
+            </p>
+            <div class="phase-stat">
+                <div class="stat-item">
+                    <span class="stat-value">&lt;60s</span>
+                    <span class="stat-label">Conversion time</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value">0</span>
+                    <span class="stat-label">New parts needed</span>
+                </div>
+            </div>
+        </div>
+        <div class="phase-visual">
+            <div class="visual-card" id="vis2">
+                <div class="vis-powerbank">
+                    <img src="exploded_view_transparent.png" height = "80%">
+                </div>
+                <div class="vis-convert">
+                        <div class="vis-steps-row">
+                            <div class="vis-step-icon">🔩</div>
+                            <div class="vis-arrow">→</div>
+                            <div class="vis-step-icon active">🔋</div>
+                            <div class="vis-arrow">→</div>
+                            <div class="vis-step-icon">⚡</div>
+                        </div>
+                        <div class="vis-steps-row" style="gap:12px; margin-top:4px;">
+                            <span style="font-size:10px;color:var(--muted);letter-spacing:1px;width:48px;text-align:center">Unscrew</span>
+                            <span style="width:14px"></span>
+                            <span style="font-size:10px;color:var(--teal);letter-spacing:1px;width:48px;text-align:center">Remove battery</span>
+                            <span style="width:14px"></span>
+                            <span style="font-size:10px;color:var(--muted);letter-spacing:1px;width:48px;text-align:center">Dock core</span>
+                        </div>
+                        <div class="vis-time-badge">Under 60 seconds</div>
+                    </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="phase-divider"></div>
+
+    <!-- PHASE 3 — Magnet lifespan -->
+    <div class="phase" id="phase1">
+        <div class="phase-text">
+            <div class="phase-kicker">
+                <div class="phase-kicker-line"></div>
+                <span class="phase-kicker-text">Phase 03 — Extending what matters</span>
+            </div>
+            <h2 class="phase-title">The magnet outlives<br>the battery.</h2>
+            <p class="phase-body">
+                The valuable components in any MagSafe device are the <strong>copper induction coils and the rare earth neodymium magnet</strong>. 
+                In a standard power bank, these are glued shut; when the battery dies, they are thrown out with it, heading straight to e-waste even 
+                though they're still functional.
+                <br><br>
+                MagSaved is designed so the Core module, containing the entire magnet array and charging coil, 
+                <strong>survives both phases of the product's life</strong>. The battery is consumable by design. The magnets are not.
+            </p>
+        </div>
+        
+        <div class="phase-visual">
+            <div class="visual-card" id="vis1">
+                <div class="vis-powerbank">
+                    <img src="stand_front_transparent.png" height = "80%">
+                    <span class="vis-label">MagSaved · Charger lifespan</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="phase-divider"></div>
+
+    <!-- PHASE 4 — PHA end of life -->
+    <div class="phase" id="phase3">
+        <div class="phase-text">
+            <div class="phase-kicker">
+                <div class="phase-kicker-line"></div>
+                <span class="phase-kicker-text">Phase 04 — End of life</span>
+            </div>
+            <h2 class="phase-title">The shell composts.<br>The core gets recycled.</h2>
+            <p class="phase-body">
+                Most plastic housings claim to be "biodegradable" — but PLA, the most common bioplastic, 
+                only breaks down in industrial composting facilities above 58°C, and behaves like conventional plastic in soil, seawater, and landfill. 
+                <br>
+                <strong>We chose PHA instead.</strong>
+                <br><br>
+                PHA is a polyester naturally produced by bacteria during fermentation. Unlike PLA, it degrades in <strong>soil, home compost, freshwater, and seawater</strong>
+                within months, leaving no microplastics behind. Critically, PHA is <strong>stable during normal use</strong>: it only biodegrades when exposed to sufficient bacterial 
+                activity, so your housing won't fall apart on a shelf.
+                <br><br>
+                Once the desktop dock phase ends, the PHA shell goes to compost. The neodymium Core module can be easily taken apart to ensure nothing needs to be wasted.
+            </p>
+        </div>
+    </div>
+</div>
+    </div>
+</section>
+
+<!-- ═══════════ SCIENCE CARDS ═══════════ -->
+<section class="science-section" id="sciSection">
+    <div class="science-inner">
+        <div class="science-header">
+            <p class="science-eyebrow">Material science</p>
+            <h2 class="science-title">Why PHA, and not just any bioplastic.</h2>
+        </div>
+        <div class="science-grid">
+            <div class="sci-card">
+                <div class="sci-card-icon">🧫</div>
+                <div class="sci-card-title">Naturally produced</div>
+                <div class="sci-card-body">PHA is synthesized inside bacterial cells during fermentation. 
+                No petrochemicals required: it is a genuinely biological material, not a chemically modified fossil-fuel derivative.</div>
+            </div>
+            <div class="sci-card">
+                <div class="sci-card-icon">🌊</div>
+                <div class="sci-card-title">Degrades in all environments</div>
+                <div class="sci-card-body">Peer-reviewed studies tracking PLA in seawater found 
+                <strong>near-zero degradation after 428 days</strong>. PHA breaks down in marine water, soil, freshwater and home compost within months 
+                without leaving microplastics.</div>
+            </div>
+            <div class="sci-card">
+                <div class="sci-card-icon">🏠</div>
+                <div class="sci-card-title">Stable on your shelf</div>
+                <div class="sci-card-body">PHA only biodegrades when exposed to high bacterial loads. 
+                    In a dry, indoor environment, like your desk or bag, it behaves as a normal, durable plastic. Your power bank won't degrade before you're done with it.</div>
+            </div>
+            <div class="sci-card">
+                <div class="sci-card-icon">⚖️</div>
+                <div class="sci-card-title">Meets EU standards</div>
+                <div class="sci-card-body">The EU Green Claims Directive and Regulation 2025/40 on packaging waste flag PLA as a greenwashing risk. 
+                PHA meets the criteria for authentic biodegradability claims across multiple real-world disposal routes.</div>
+            </div>
+            <div class="sci-card highlight">
+                <div class="sci-card-icon">♻️</div>
+                <div class="sci-card-title">The complete end-of-life path</div>
+                <div class="sci-card-body">
+                    After Phase 2, MagSaved separates cleanly into three streams: the <strong>PHA shell</strong> composts at home or in soil; 
+                    the <strong>extracted Li-ion cells</strong> go to a certified battery drop-off (terminals insulated, placed in a fireproof bag); and the 
+                    <strong>neodymium Core module</strong>, accessible without any destructive disassembly, feeds directly into rare-earth recycling. 
+                    No glue. No mixed-material waste. No guesswork.
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════ FOOTER CTA ═══════════ -->
+<footer class="footer-cta" id="footerCta">
+    <p class="footer-eyebrow">Ready to convert?</p>
+    <h2 class="footer-title">Don't throw it out.<br><em>Transform it.</em></h2>
+    <p class="footer-sub">When your battery degrades, the manual is waiting. Six screws, sixty seconds, zero waste.</p>
+    <div class="btn-row">
+        <a href="conversionmanual.html" class="btn btn-primary">Read the Conversion Manual</a>
+        <a href="#hero" class="btn btn-secondary">Back to top ↑</a>
+    </div>
+</footer>
+
+<script>
+gsap.registerPlugin(ScrollTrigger);
+
+// ─── HERO ENTRANCE ───────────────────────────
+gsap.set(['#heroEyebrow','#heroTitle','#heroSub','#heroBadges'], { opacity:0, y:20 });
+
+gsap.timeline({ delay: 0.2 })
+    .to('#heroEyebrow',  { opacity:1, y:0, duration:0.7, ease:'power2.out' })
+    .to('#heroTitle',    { opacity:1, y:0, duration:0.9, ease:'power2.out' }, '-=0.4')
+    .to('#heroSub',      { opacity:1, y:0, duration:0.7, ease:'power2.out' }, '-=0.4')
+    .to('#heroBadges',   { opacity:1, y:0, duration:0.6, ease:'power2.out' }, '-=0.3')
+    .to('#heroScroll',   { opacity:1, duration:0.5 }, '-=0.1');
+
+// ─── SPINE ───────────────────────────────────
+const spineWrapper = document.getElementById('spineWrapper');
+const spineFill = document.getElementById('spineFill');
+
+ScrollTrigger.create({
+    trigger: '#phase0',
+    start: 'top 80%',
+    onEnter: () => spineWrapper.classList.add('visible'),
+    onLeaveBack: () => spineWrapper.classList.remove('visible')
+});
+
+ScrollTrigger.create({
+    trigger: '.phases',
+    start: 'top 60%',
+    end: 'bottom 40%',
+    scrub: 0.3,
+    onUpdate: (self) => {
+        spineFill.style.height = (self.progress * 100) + '%';
+    }
+});
+
+// ─── PROGRESS BAR ───────────────────────────
+ScrollTrigger.create({
+    trigger: 'body',
+    start: 'top top',
+    end: 'bottom bottom',
+    scrub: 0.1,
+    onUpdate: (self) => {
+        document.getElementById('progressBar').style.width = (self.progress * 100) + '%';
+    }
+});
+
+// ─── PHASE ENTRANCE ANIMATIONS ───────────────
+function animatePhase(phaseId, visId) {
+    const phase = document.getElementById(phaseId);
+    if (!phase) return;
+
+    const kicker = phase.querySelector('.phase-kicker');
+    const title  = phase.querySelector('.phase-title');
+    const body   = phase.querySelector('.phase-body');
+    const stat   = phase.querySelector('.phase-stat');
+    const vis    = document.getElementById(visId);
+
+    const tl = gsap.timeline({
+        scrollTrigger: {
+            trigger: phase,
+            start: 'top 70%',
+            once: true
+        }
+    });
+
+    if (kicker) tl.to(kicker, { opacity:1, x:0, duration:0.5, ease:'power2.out' });
+    if (title)  tl.to(title,  { opacity:1, y:0, duration:0.6, ease:'power2.out' }, '-=0.25');
+    if (body)   tl.to(body,   { opacity:1, y:0, duration:0.6, ease:'power2.out' }, '-=0.3');
+    if (stat)   tl.to(stat,   { opacity:1, y:0, duration:0.5, ease:'power2.out' }, '-=0.3');
+    if (vis)    tl.to(vis,    { opacity:1, scale:1, duration:0.7, ease:'back.out(1.3)' }, '-=0.4');
+}
+
+animatePhase('phase0', 'vis0');
+animatePhase('phase1', 'vis1');
+animatePhase('phase2', 'vis2');
+animatePhase('phase3', 'vis3');
+
+// ─── LIFECYCLE BAR ───────────────────────────
+gsap.from('#lifecycleSection .lifecycle-title', {
+    opacity: 0, y: 24, duration: 0.7, ease: 'power2.out',
+    scrollTrigger: { trigger: '#lifecycleSection', start: 'top 75%', once: true }
+});
+
+// ─── SCIENCE CARDS ───────────────────────────
+gsap.from('.sci-card', {
+    opacity: 0, y: 28, duration: 0.6, stagger: 0.1, ease: 'power2.out',
+    scrollTrigger: { trigger: '#sciSection', start: 'top 70%', once: true }
+});
+
+// ─── FOOTER ──────────────────────────────────
+gsap.from('#footerCta .footer-title, #footerCta .footer-sub, #footerCta .btn-row', {
+    opacity: 0, y: 20, duration: 0.7, stagger: 0.15, ease: 'power2.out',
+    scrollTrigger: { trigger: '#footerCta', start: 'top 75%', once: true }
+});
+
+ScrollTrigger.refresh();
+</script>
 </body>
 </html>
