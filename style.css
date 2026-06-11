@@ -149,12 +149,11 @@ p {
 }
 
 .hero-content h1 {
-    font-size: clamp(36px, 6vw, 64px);
+    font-size: clamp(32px, 8vw, 64px);
     font-weight: 700;
-    line-height: 1.05;
+    line-height: 1.1;
     letter-spacing: -1px;
     color: #fff;
-    white-space: nowrap;
     margin: 0 0 20px 0;
 }
 
@@ -170,7 +169,7 @@ p {
     flex-direction: column;
     align-items: center;
     gap: 15px;
-    width: max-content;
+    width: 100%;
 }
 
 .button-group .top-buttons {
@@ -178,6 +177,7 @@ p {
     gap: 15px;
     flex-wrap: wrap;
     justify-content: center;
+    width: 100%;
 }
 
 .hero-image-container {
@@ -220,5 +220,26 @@ p {
     }
     .company-header {
         padding: 16px 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-content h1 {
+        font-size: 36px;
+    }
+    .hero-image {
+        width: 250px;
+    }
+    .btn {
+        padding: 14px 20px;
+        font-size: 15px;
+        max-width: 100%;
+    }
+    .button-group .top-buttons {
+        flex-direction: column;
+        width: 100%;
+    }
+    .button-group .top-buttons .btn {
+        width: 100%;
     }
 }
