@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Conversion Manual | Circular Power</title>
+    <title>Conversion Manual | MagSaved</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
@@ -18,7 +18,6 @@
             overflow-x: hidden;
         }
 
-        
         .company-header {
             position: fixed;
             top: 0; left: 0; right: 0;
@@ -464,7 +463,7 @@
 <div class="progress-bar" id="progressBar"></div>
 
 <header class="company-header">
-    <div class="company-name">Circular Power</div>
+    <div class="company-name">MagSaved</div>
 </header>
 
 
@@ -641,7 +640,7 @@
         <div class="section-card" style="padding-bottom: 10px;">
             <h3 style="border:none; text-align:center;">Video Walkthrough</h3>
             <div class="video-container">
-                <iframe src="https://youtu.be/DgDBe2COzcY" title="Conversion manual" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                <iframe src="https://www.youtube.com/embed/DgDBe2COzcY" title="Conversion manual" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
             </div>
         </div>
 
@@ -906,9 +905,9 @@ async function initSequenceAnimation() {
         scrollTrigger: {
             trigger: '#scrollStage',
             start: 'top top',
-            end: '+=300%',
+            end: '+=150%',
             pin: '#pinWrapper',
-            scrub: 1,
+            scrub: 1.0,
             onUpdate: (self) => {
                 const progress = self.progress;
                 const stepIdx = Math.min(totalSteps - 1, Math.floor(progress * totalSteps));
