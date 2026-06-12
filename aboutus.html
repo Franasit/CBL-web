@@ -821,6 +821,7 @@
             gap: 14px;
             justify-content: center;
             flex-wrap: wrap;
+            padding: 5px;
         }
         .btn {
             display: inline-flex;
@@ -1138,7 +1139,10 @@
     <p class="footer-sub">When your battery degrades, the manual is waiting. Six screws, sixty seconds, zero waste.</p>
     <div class="btn-row">
         <a href="conversionmanual.html" class="btn btn-primary">Read the Conversion Manual</a>
+    </div>
+    <div class="btn-row">
         <a href="#hero" class="btn btn-secondary">Back to top ↑</a>
+        <a href="index.html" class="btn btn-primary">Return Home</a>
     </div>
 </footer>
 
@@ -1147,7 +1151,6 @@ gsap.registerPlugin(ScrollTrigger);
 
 // ─── HERO ENTRANCE ───────────────────────────
 gsap.set(['#heroEyebrow','#heroTitle','#heroSub','#heroBadges'], { opacity:0, y:20 });
-
 gsap.timeline({ delay: 0.2 })
     .to('#heroEyebrow',  { opacity:1, y:0, duration:0.7, ease:'power2.out' })
     .to('#heroTitle',    { opacity:1, y:0, duration:0.9, ease:'power2.out' }, '-=0.4')
